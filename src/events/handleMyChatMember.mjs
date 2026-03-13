@@ -11,15 +11,15 @@ export default async function handleMyChatMember(ctx, tableManager) {
         username: ctx.from.username || null,
         first_name: ctx.from.first_name || null,
         last_name: ctx.from.last_name || null,
-        is_bot: ctx.from.is_bot ? 1 : 0,
+        is_bot: ctx.from.is_bot,
     };
 
     try {
         // تأكد من وجود المستخدم في جدول 'users'
-        const existingUser = tableManager.dbManager.fetchData('users', ['user_id'], { user_id: userId });
+        const existingUser = await tableManager.dbManager.fetchData('users', ['user_id'], { user_id: userId });
         if (existingUser.length === 0) {
-            const insertResult = tableManager.dbManager.insertData('users', userData);
-            if (insertResult.changes === 0) {
+            const insertResult = await tableManager.dbManager.insertData('users', userData);
+            if (!insertResult) {
                 logInfo(`Failed to insert user ${userId} into 'users'.`);
             }
 
@@ -35,7 +35,7 @@ export default async function handleMyChatMember(ctx, tableManager) {
         }
 
         // تأكد من وجود الدردشة في جدول 'chats'
-        const existingChat = tableManager.dbManager.fetchData('chats', ['chat_id'], { chat_id: chatId });
+        const existingChat = await tableManager.dbManager.fetchData('chats', ['chat_id'], { chat_id: chatId });
         if (existingChat.length === 0) {
             const chatData = {
                 chat_id: chatId,
@@ -44,8 +44,8 @@ export default async function handleMyChatMember(ctx, tableManager) {
                 chat_username: ctx.chat.username || null,
                 status: 'active', // يتم تعيين الحالة كـ "active" عند إنشاء الدردشة لأول مرة
             };
-            const insertChatResult = tableManager.dbManager.insertData('chats', chatData);
-            if (insertChatResult.changes === 0) {
+            const insertChatResult = await tableManager.dbManager.insertData('chats', chatData);
+            if (!insertChatResult) {
                 logInfo(`Failed to insert chat ${chatId} into 'chats'.`);
             }
             logInfo(`Chat ${chatId} has been inserted into 'chats'.`);
@@ -53,15 +53,15 @@ export default async function handleMyChatMember(ctx, tableManager) {
 
         // تحديث حالة الدردشة بناءً على حالة المستخدم الجديدة
         if (status === 'left' || status === 'kicked') {
-            tableManager.dbManager.updateData('chats', { status: status }, { chat_id: chatId });
+            await tableManager.dbManager.updateData('chats', { status: status }, { chat_id: chatId });
             logInfo(`Chat ${chatId} status updated to: ${status}`);
         } else {
-            tableManager.dbManager.updateData('chats', { status: 'active' }, { chat_id: chatId });
+            await tableManager.dbManager.updateData('chats', { status: 'active' }, { chat_id: chatId });
             logInfo(`Chat ${chatId} status updated to: active`);
         }
 
         // إدارة عضوية المستخدم في الدردشة في جدول 'chat_members'
-        const existingMember = tableManager.dbManager.fetchData('chat_members', ['chat_id', 'user_id'], { chat_id: chatId, user_id: userId });
+        const existingMember = await tableManager.dbManager.fetchData('chat_members', ['chat_id', 'user_id'], { chat_id: chatId, user_id: userId });
         const memberData = {
             chat_id: chatId,
             user_id: userId,
@@ -70,11 +70,11 @@ export default async function handleMyChatMember(ctx, tableManager) {
 
         if (existingMember.length > 0) {
             // تحديث العضوية إذا كانت موجودة
-            tableManager.dbManager.updateData('chat_members', memberData, { chat_id: chatId, user_id: userId });
+            await tableManager.dbManager.updateData('chat_members', memberData, { chat_id: chatId, user_id: userId });
             logInfo(`Membership for user ${userId} in chat ${chatId} has been updated.`);
         } else {
             // إضافة العضوية إذا لم تكن موجودة
-            tableManager.dbManager.insertData('chat_members', memberData);
+            await tableManager.dbManager.insertData('chat_members', memberData);
             logInfo(`Membership for user ${userId} has been inserted into 'chat_members'.`);
         }
 
