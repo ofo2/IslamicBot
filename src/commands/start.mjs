@@ -1,8 +1,8 @@
 export function startCommand(client) {
     client.command('start', async (ctx) => {
         const message_id = ctx?.message?.message_id;
-        const firstName = ctx.from.first_name || 'المستخدم'; // استخدم اسم المستخدم إذا كان موجودًا
-        const botName = process.env.BOT_NAME || 'البوت'; // استيراد اسم البوت من ملف .env، افتراضياً "البوت"
+        const firstName = ctx.from.first_name || 'المستخدم';
+        const botName = process.env.BOT_NAME || 'البوت';
 
         let welcomeMessage = `✨ مرحبًا بك، ${firstName}! ✨\n\n`;
         welcomeMessage += `أهلاً بك في بوت ${botName}، البوت الإسلامي الذي يسعى لخدمتك. \n`;
@@ -28,11 +28,22 @@ export function startCommand(client) {
         welcomeMessage += `يمكنك اختبار معلوماتك من خلال مجموعة من الأسئلة العشوائية المتنوعة في العلوم الشرعية.\n`;
         welcomeMessage += `استخدم الأمر /quiz للبدء باختبار عشوائي.\n\n`;
 
-        welcomeMessage += `💡 لمزيد من المعلومات حول البوت يمكنك استخدام الأمر /help.`;
+        welcomeMessage += `💡 لمزيد من المعلومات حول البوت يمكنك استخدام الأمر /help.\n\n`;
 
-        await ctx.reply(welcomeMessage, { 
-            parse_mode: 'Markdown', 
-            reply_to_message_id: message_id 
+        // الإضافة الجديدة
+        welcomeMessage += `🛠️ تم إنشاؤه من قبل Abduallah Shoiep ❤️\n`;
+        welcomeMessage += `📸 لا تنسى متابعة حساب الإنستغرام الخاص بي: @qf5.x 🌟`;
+
+        await ctx.reply(welcomeMessage, {
+            parse_mode: 'Markdown',
+            reply_to_message_id: message_id,
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        { text: "تابع الآن على إنستغرام 🌟", url: "https://www.instagram.com/qf5.x/" }
+                    ]
+                ]
+            }
         });
     });
 }
