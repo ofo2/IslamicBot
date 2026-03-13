@@ -1,18 +1,8 @@
 {
   "version": 2,
   "functions": {
-    "api/**/*.mjs": {
+    "app/api/**/*.ts": {
       "maxDuration": 30
     }
-  },
-  "rewrites": [
-    {
-      "source": "/webhook",
-      "destination": "/api/webhook"
-    },
-    {
-      "source": "/set-webhook",
-      "destination": "/api/set-webhook"
-    }
-  ]
+  }
 }
