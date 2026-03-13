@@ -1,6 +1,6 @@
 import { fetchImageFromSnapshot } from '../utils/fetchImageFromSnapshot.mjs';
 import { Markup } from 'telegraf';
-import fetch from 'node-fetch';
+// Using native fetch (available in Node.js 18+)
 import fs from 'fs-extra';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
