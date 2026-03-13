@@ -1,13 +1,12 @@
-
 import { logInfo } from "../utils/logger.mjs";
 
-export default function channelPost(ctx, tableManager) {
+export default async function channelPost(ctx, tableManager) {
     const chatId = ctx.chat.id;        
 
     // تأكد من وجود الدردشة في جدول 'chats'
-    const existingChat = tableManager.dbManager.fetchData('chats', ['chat_id'], { chat_id: chatId });
+    const existingChat = await tableManager.dbManager.fetchData('chats', ['chat_id'], { chat_id: chatId });
     if (existingChat.length === 0) {
-        tableManager.dbManager.updateData('chats', { status: 'active' }, { chat_id: chatId });
+        await tableManager.dbManager.updateData('chats', { status: 'active' }, { chat_id: chatId });
         const chatData = {
             chat_id: chatId,
             chat_title: ctx.chat.title || 'Channel Chat',
@@ -15,8 +14,8 @@ export default function channelPost(ctx, tableManager) {
             chat_username: ctx.chat.username || null,
             status: 'active',
         };
-        const insertChatResult = tableManager.dbManager.insertData('chats', chatData);
-        if (insertChatResult.changes === 0) {
+        const insertChatResult = await tableManager.dbManager.insertData('chats', chatData);
+        if (!insertChatResult) {
             logInfo(`Failed to insert chat ${chatId} into 'chats'.`);
         } else {
             logInfo(`Chat ${chatId} has been inserted into 'chats'.`);

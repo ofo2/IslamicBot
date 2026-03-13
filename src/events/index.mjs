@@ -19,5 +19,5 @@ export function setupEvents(client, tableManager) {
 
     client.on('text', async (ctx) => setupTextEvents(ctx, tableManager));
 
-    client.on('channel_post', async (ctx) => channelPost(ctx, tableManager));
+    client.on('channel_post', async (ctx) => await channelPost(ctx, tableManager));
 }

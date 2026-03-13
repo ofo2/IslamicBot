@@ -1,13 +1,13 @@
 {
   "name": "islamicbot",
   "version": "1.0.0",
+  "type": "module",
   "description": "A Telegram bot that offers various essential services for every Muslim in Arabic",
-  "main": "SRC/index.mjs",
   "scripts": {
-    "start": "node src/index.mjs",
-    "dev": "nodemon src/index.mjs",
-    "DEBUG": "DEBUG=* node src/index.mjs",
-    "commit": "node scripts/autoCommit.mjs"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "keywords": [],
   "author": {
@@ -16,24 +16,33 @@
     "url": "https://github.com/rn0x/IslamicBot"
   },
   "license": "MIT",
-  "nodemonConfig": {
-    "ignore": [
-      "src/translations",
-      "node_modules",
-      "logs",
-      "database.db",
-      "session.db"
-    ]
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.7"
-  },
   "dependencies": {
-    "better-sqlite3": "^11.3.0",
-    "dotenv": "^16.4.5",
-    "fs-extra": "^11.2.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-dropdown-menu": "^2.1.4",
+    "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-tabs": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.3.1",
     "fuse.js": "^7.0.0",
     "html-to-text": "^9.0.5",
+    "lucide-react": "^0.469.0",
+    "next": "^15.3.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^2.15.0",
+    "swr": "^2.3.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
     "telegraf": "^4.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
   }
 }

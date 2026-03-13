@@ -12,7 +12,7 @@ export async function setupTextEvents(ctx, tableManager) {
     const __dirname = path.dirname(__filename);
     // استجابة لحدث النص (عندما يرسل المستخدم كلمة)
 
-    dbChat(ctx, tableManager); // اضافة المحادثات الجديده او الاعضاء الجدد في القاعدة باستعمال حدث الرسائل TEXT
+    await dbChat(ctx, tableManager); // اضافة المحادثات الجديده او الاعضاء الجدد في القاعدة باستعمال حدث الرسائل TEXT
     await processAyahSearch(ctx); // استدعاء دالة معالجة البحث عن آية
     await processHadithSearch(ctx); // استدعاء دالة معالجة البحث عن حديث
     await processFatwaSearch(ctx); // استدعاء دالة معالجة البحث عن فتوى
