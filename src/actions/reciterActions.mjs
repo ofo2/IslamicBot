@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+// Using native fetch (available in Node.js 18+)
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { logError, logInfo } from '../utils/logger.mjs';
